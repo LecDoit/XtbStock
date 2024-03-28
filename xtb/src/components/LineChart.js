@@ -1,9 +1,17 @@
 import React,{useEffect,useState,useCallback} from 'react';
 import {Bar,Line} from 'react-chartjs-2'
 import { useStocksContext } from "../hooks/useStocksContext";
-import {Chart as ChartJS} from 'chart.js/auto'
+import {Chart as ChartJS,
+        LineElement,
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        Tooltip,
+        Legend
+} from 'chart.js/auto'
 
 import axios from'axios';
+
 
 
 function LineChart({chartData,user,pwd,stock}) {
@@ -16,6 +24,8 @@ function LineChart({chartData,user,pwd,stock}) {
     const [buy,setBuy] = useState(0)
     const [sell,setSell] = useState(0)
     const [symbol,setSymbols] = useState('')
+    const [buyLine,setBuyLine] = useState('')
+    const [sellLine,setSellLine] = useState('')
 
 
     useState(()=>{
@@ -25,6 +35,50 @@ function LineChart({chartData,user,pwd,stock}) {
             setBuy(Number(stock.buy))
             setSell(Number(stock.sell))
             setSymbols(stock.symbol)
+            setBuyLine({beforeDatasetsDraw(chart){
+                            const {ctx,scales:{x,y},chartArea:{top,right,bottom,left,width,height}} = chart
+
+                            // success line
+                            ctx.strokeStyle = 'green';
+
+                            ctx.strokeRect(left,y.getPixelForValue(stock.buy),width,0)
+                            ctx.restore()
+
+                            // success backgroud
+                            ctx.fillStyle = 'rgba(0,200,0,0.2'
+                            ctx.fillRect(left,y.getPixelForValue(stock.buy),width,y.getPixelForValue(stock.buy)+bottom)
+                            ctx.restore()
+
+                            // ctx.lineWidth = 1;
+                            // ctx.moveTo(x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.buy));
+                            // ctx.lineTo(x.getPixelForValue(chartData.labels[chartData.labels.length-1]),y.getPixelForValue(stock.buy));
+                            // ctx.stroke();
+                            // ctx.fillText('Buy',x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.buy));
+
+                            // ctx.closePath();
+                            // ctx.restore();
+                            }   
+                        })
+            setSellLine({beforeDatasetsDraw(chart){
+
+
+
+
+                
+                            const {ctx,scales:{x,y}} = chart
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.strokeStyle = 'red';
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.sell));
+                            ctx.lineTo(x.getPixelForValue(chartData.labels[chartData.labels.length-1]),y.getPixelForValue(stock.sell));
+                            ctx.stroke();
+                            ctx.font = '10px Arial';
+                            ctx.fillText('Sell',x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.sell));
+                            // ctx.closePath();
+                            // ctx.restore();
+                            }   
+                        })
         }
     },[stock,stocks])
 
@@ -55,29 +109,23 @@ function LineChart({chartData,user,pwd,stock}) {
 
     }
 
+    
+
     const handleSetPrice = (e)=>{
         e.preventDefault()
-        console.log(stock)
+        console.log(buy)
 
     }
 
     const updateUser = async (e)=>{
         e.preventDefault()
-        // let splicedArray = stocks.find((s)=>s._id===stock._id).buy
 
-        // let filteredArrayBuy = stocks.filter((s)=>s._id == stock._id)[0].buy
         const filteredArray = stocks.filter((s)=>s._id !== stock._id)
-        // filteredArrayBuy = buy
-        // const currObj = {user:user,stocks:filteredArray}
 
         stock.buy=buy
         stock.sell=sell
-        console.log(filteredArray)
+
         filteredArray.push(stock)
-        console.log(filteredArray)
-
-
-        // console.log( {"user":user,"stocks":[{"symbol": symbol, "buy": buy, "sell": sell}]})
 
         axios.patch('/updateUserSellNBuy',
         
@@ -97,14 +145,14 @@ function LineChart({chartData,user,pwd,stock}) {
     }
 
     useEffect(()=>{
-        // console.log(stocks)
+
     },[stocks])
 
 
 
     return(
         <div>
-        {stock ?  <div style={{width:300}}>
+        {stock ?  <div style={{width:780}}>
             <form>
                 <label>Price to Sell</label>
                 <input onChange={(e)=>setSell(Number(e.target.value))} value={sell} type="number"></input>
@@ -114,7 +162,9 @@ function LineChart({chartData,user,pwd,stock}) {
                 <button onClick={updateUser}>Set</button>
             </form>
             <button onClick={handleClickDeleteStock}>Delete </button>
-            <Line data={chartData} />
+            <Line data={chartData}  plugins={
+                [buyLine,sellLine]
+            }/>
 
             <button onClick={handleSetPrice}>Print stocks</button>
         </div> 

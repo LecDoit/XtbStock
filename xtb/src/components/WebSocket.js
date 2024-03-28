@@ -26,9 +26,6 @@ const chartRangeFactory = (start,end,symbol)=>{
 }
 
 const lineChartFactory = (arg,arg2)=>{
-    // console.log({arg,arg2})
-
-  
 
     const labels = []
     const datasets = [{
