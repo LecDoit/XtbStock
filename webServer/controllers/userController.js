@@ -72,18 +72,20 @@ const updateUser = async (req,res)=>{
 }
 
 const updateUserSellNBuy = async (req,res)=>{
+   
+    const user=  req.body.user
     const userRequest = await Users.findOneAndUpdate({username:user},{ 
 
-        $push :{stocks:req.body.stocks[0]}
+        ...req.body
         
         
     })
 
 
     const userRequestRefreshed = await Users.find({username:user})
-    console.log('updating user',userRequestRefreshed)
+    console.log('updating user',userRequestRefreshed[0].stocks)
     res.status(200).json(userRequestRefreshed[0])
-
+    
 }
 
 const resetUser = async (req,res)=>{
@@ -123,6 +125,8 @@ module.exports = {
     getAllUsers,
     updateUser,
     resetUser,
-    deleteStock
+    deleteStock,
+    updateUserSellNBuy
+
 }
 

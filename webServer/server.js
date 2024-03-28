@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3500;
 
 const WebSocket = require('ws')
 
-const {createUser,getAllUsers,getUser,updateUser,resetUser,deleteStock} = require('./controllers/userController.js')
+const {createUser,getAllUsers,getUser,updateUser,resetUser,deleteStock,updateUserSellNBuy} = require('./controllers/userController.js')
 
 const {getLogin, getSymbol } = require('./controllers/xtbController.js')
 
@@ -44,6 +44,8 @@ app.post('/getUser', getUser)
 app.post('/createUser', createUser)
 
 app.patch('/updateUser',updateUser)
+
+app.patch('/updateUserSellNBuy',updateUserSellNBuy)
 
 app.patch('/resetUser',resetUser)
 

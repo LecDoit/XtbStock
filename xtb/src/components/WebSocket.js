@@ -217,7 +217,7 @@ function WebSocket({user,pwd}) {
             setXtbStocks([])
             setReadyToBeSent([])
         }
-        console.log({operation,stocks,xtbStocks})
+        // console.log({operation,stocks,xtbStocks})
         // console.log('jezeli stock sie odswiezyl globalnie to to powinno zadzialac')
 
 
@@ -243,6 +243,7 @@ function WebSocket({user,pwd}) {
     useEffect(()=>{
         if (stocks.length===xtbStocks.length){
             // console.log('cos tutaj sie dzieje tutaj ma byc rowna dlugosc i loopuje')
+            setReadyToBeSent([])
            
             for (let i =0;i<stocks.length;i++){
               
@@ -258,13 +259,11 @@ function WebSocket({user,pwd}) {
 
         if(stocks.length===xtbStocks.length && 
             xtbStocks.length===readyToBeSent.length){
-            console.log('now they are equal')
-            console.log({stocks:stocks.length,xtb:xtbStocks.length,ready2b: readyToBeSent.length })
+
             setEqual(true)
 
         } else{
-            console.log('they are not equal')
-            console.log({stocks:stocks.length,xtb:xtbStocks.length,ready2b: readyToBeSent.length })
+
             setEqual(false)
         }
         
@@ -275,14 +274,16 @@ function WebSocket({user,pwd}) {
             <div>{connectionStatus}</div>
             <button onClick={printAllSymbols}>PrintAllSymbolsState</button>
             
-            {equal===true && readyToBeSent.map((item,i)=>(
-// console.log(item)
-                    <LineChart  stock={stocks[i]} user={user} pwd = {pwd} key={i} chartData=
-                    {item}/>
-                ))
+            {equal===true && readyToBeSent.map((item,i)=>{
+                
+ 
+            return  <LineChart  stock={stocks[i]} user={user} pwd = {pwd} key={i} chartData=
+                {item}/>
+        
+                    })
             }  
 
-            {/* <button onClick={printFunc}>printGetAllSymbols</button> */}
+
        
 
 

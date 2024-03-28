@@ -9,22 +9,29 @@ import axios from'axios';
 function LineChart({chartData,user,pwd,stock}) {
 
     
-    console.log(stock)
+
 
     
     const {stocks,dispatch} = useStocksContext()
-    // const [buy,setBuy] = useState(Number(stock.buy))
-    // const [sell,setSell] = useState(Number(stock.sell))
-    // const [symbol,setSymbols] = useState(stock.symbol)
+    const [buy,setBuy] = useState(0)
+    const [sell,setSell] = useState(0)
+    const [symbol,setSymbols] = useState('')
 
 
-
+    useState(()=>{
+        if (stock===undefined){
+            console.log('sex')
+        }else {
+            setBuy(Number(stock.buy))
+            setSell(Number(stock.sell))
+            setSymbols(stock.symbol)
+        }
+    },[stock,stocks])
 
 
 
     const handleClickDeleteStock = async (e) =>{
  
-
         const filteredArray = stocks.filter((s)=>s._id !== stock._id)
         const currObj = {user:user,stocks:filteredArray}
 
@@ -56,29 +63,36 @@ function LineChart({chartData,user,pwd,stock}) {
 
     const updateUser = async (e)=>{
         e.preventDefault()
+        // let splicedArray = stocks.find((s)=>s._id===stock._id).buy
 
-        // console.log(stock)
-        // stock.buy=buy
-        // stock.sell=sell
-        // console.log(stock)
+        // let filteredArrayBuy = stocks.filter((s)=>s._id == stock._id)[0].buy
+        const filteredArray = stocks.filter((s)=>s._id !== stock._id)
+        // filteredArrayBuy = buy
+        // const currObj = {user:user,stocks:filteredArray}
+
+        stock.buy=buy
+        stock.sell=sell
+        console.log(filteredArray)
+        filteredArray.push(stock)
+        console.log(filteredArray)
+
 
         // console.log( {"user":user,"stocks":[{"symbol": symbol, "buy": buy, "sell": sell}]})
 
-        // axios.patch('/updateUser',
+        axios.patch('/updateUserSellNBuy',
         
         
-        // {"user":user,"stocks":[{"symbol": symbol, "buy": buy, "sell": sell}]}
+        {"user":user,"stocks":filteredArray}
 
-        // )
-        //     .then((response)=>{
-        //         console.log(response.data)
-        //         const json = response.data.stocks
-        //         dispatch({type:`CREATE_STOCK`,payload:json})
+        )
+            .then((response)=>{
+                console.log(response.data)
+                const json = response.data.stocks
+                dispatch({type:`DELETE_STOCK`,payload:json})
              
 
-        //     })
-            // setChosenSymbol('')
-            // setInputValue('')
+            })
+
                
     }
 
@@ -89,19 +103,24 @@ function LineChart({chartData,user,pwd,stock}) {
 
 
     return(
-        <div style={{width:300}}>
-            {/* <form>
+        <div>
+        {stock ?  <div style={{width:300}}>
+            <form>
                 <label>Price to Sell</label>
                 <input onChange={(e)=>setSell(Number(e.target.value))} value={sell} type="number"></input>
                 <label>Price to Buy</label>
 
                 <input onChange={(e)=>setBuy(Number(e.target.value))} value={buy} type="number"></input>
                 <button onClick={updateUser}>Set</button>
-            </form> */}
+            </form>
             <button onClick={handleClickDeleteStock}>Delete </button>
             <Line data={chartData} />
 
             <button onClick={handleSetPrice}>Print stocks</button>
+        </div> 
+        
+        : <div>no</div>}
+
         </div>
     )
 
