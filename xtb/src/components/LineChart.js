@@ -35,8 +35,11 @@ function LineChart({chartData,user,pwd,stock}) {
             setBuy(Number(stock.buy))
             setSell(Number(stock.sell))
             setSymbols(stock.symbol)
+            if (stock.buy===0){
+            } else {
             setBuyLine({beforeDatasetsDraw(chart){
                             const {ctx,scales:{x,y},chartArea:{top,right,bottom,left,width,height}} = chart
+                            ctx.save();
 
                             // success line
                             ctx.strokeStyle = 'green';
@@ -46,39 +49,47 @@ function LineChart({chartData,user,pwd,stock}) {
 
                             // success backgroud
                             ctx.fillStyle = 'rgba(0,200,0,0.2'
-                            ctx.fillRect(left,y.getPixelForValue(stock.buy),width,y.getPixelForValue(stock.buy)+bottom)
+                            ctx.fillRect(left,bottom,width,y.getPixelForValue(stock.buy)-bottom)
                             ctx.restore()
 
-                            // ctx.lineWidth = 1;
-                            // ctx.moveTo(x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.buy));
-                            // ctx.lineTo(x.getPixelForValue(chartData.labels[chartData.labels.length-1]),y.getPixelForValue(stock.buy));
-                            // ctx.stroke();
-                            // ctx.fillText('Buy',x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.buy));
+                            // success text
+                            ctx.font = '12px Arial'
+                            ctx.fillStyle = ('green')
+                            ctx.fillText('Buy', width,y.getPixelForValue(stock.buy))
 
-                            // ctx.closePath();
-                            // ctx.restore();
+
+        
                             }   
                         })
+                    }
+            if (stock.sell===0){
+
+            } else{
             setSellLine({beforeDatasetsDraw(chart){
-
-
-
-
-                
-                            const {ctx,scales:{x,y}} = chart
+                            const {ctx,scales:{x,y},chartArea:{top,right,bottom,left,width,height}} = chart
                             ctx.save();
-                            ctx.beginPath();
+
+                            //success line
                             ctx.strokeStyle = 'red';
-                            ctx.lineWidth = 1;
-                            ctx.moveTo(x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.sell));
-                            ctx.lineTo(x.getPixelForValue(chartData.labels[chartData.labels.length-1]),y.getPixelForValue(stock.sell));
-                            ctx.stroke();
-                            ctx.font = '10px Arial';
-                            ctx.fillText('Sell',x.getPixelForValue(chartData.labels[0]),y.getPixelForValue(stock.sell));
-                            // ctx.closePath();
-                            // ctx.restore();
+                            ctx.strokeRect(left,y.getPixelForValue(stock.sell),width,0)
+                            ctx.restore()
+
+
+                            // success backgroud
+
+                            ctx.fillStyle = 'rgba(255,0,0,0.2'
+                            ctx.fillRect(left,top,width,y.getPixelForValue(stock.sell)-top)
+                            ctx.restore()
+
+                            // success text
+                            ctx.font = '12px Arial'
+                            ctx.fillStyle = ('red')
+                            ctx.fillText('Sell', width,y.getPixelForValue(stock.sell))
+
+          
                             }   
                         })
+            }
         }
     },[stock,stocks])
 
