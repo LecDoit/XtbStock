@@ -10,7 +10,12 @@ const userSchema = new Schema({
         
             symbol:{type:String},
             buy:{type:Number},
-            sell:{type:Number}
+            sell:{type:Number},
+
+            start:{type:Number},
+            period:{type:Number},
+            ticks:{type:Number}
+
         
     }]
 },{timestamps:true})

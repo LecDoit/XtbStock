@@ -8,16 +8,16 @@ import StockSearch from './StockSearch';
 
 
 
-const chartRangeFactory = (start,end,symbol)=>{
+const chartRangeFactory = (start,end,symbol,ticks,period)=>{
     const chartRange = {
         "command": "getChartRangeRequest",
         "arguments": {
             "info": {
                 "end": end,
-                "period": 43200,
+                "period": period,
                 "start": start,
                 "symbol": symbol,
-                "ticks": 50
+                "ticks": ticks
             }
         }
     }
@@ -98,7 +98,8 @@ function WebSocket({user,pwd}) {
 
         
     const startDate = new Date('January 1, 2022').getTime()
-    const endDate = new Date('January 1, 2024').getTime()
+    const endDate = new Date().getTime()
+    
 
     
 
@@ -188,7 +189,7 @@ function WebSocket({user,pwd}) {
 
             
             for (let a = 0 ; stocks.length>a;a++){
-                sendJsonMessage(chartRangeFactory(startDate,endDate,stocks[a].symbol))
+                sendJsonMessage(chartRangeFactory(startDate,endDate,stocks[a].symbol,stocks[a].ticks,stocks[a].period))
                 // console.log('6. im doing loop')
                 setOperation('chartRequest')
                 setCounter((count)=>count+1)
