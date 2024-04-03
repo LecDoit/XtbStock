@@ -28,7 +28,20 @@ function LineChart({chartData,user,pwd,stock}) {
     const [symbol,setSymbols] = useState('')
     const [buyLine,setBuyLine] = useState('')
     const [sellLine,setSellLine] = useState('')
-    const [showDetails,setShowDetails] = useState(false)
+    const [showDetails,setShowDetails] = useState(true)
+
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
+
+    const [lastYear, setLastYear] = useState('')
+    const [last5Year, setLast5Year] = useState('')
+    const [last10Year, setLast10Year] = useState('')
+    const [lastMonth, setLastMonth] = useState('')
+
+    // const startDate = new Date('January 1, 2022').getTime()
+
+
+
 
 
     useState(()=>{
@@ -40,6 +53,8 @@ function LineChart({chartData,user,pwd,stock}) {
             setSymbols(stock.symbol)
             setPeriod(stock.period)
             setTicks(stock.ticks)
+            setStartDate(stock.start)
+            setEndDate(new Date().getTime())
             if (stock.buy===0){
             } else {
             setBuyLine({beforeDatasetsDraw(chart){
@@ -125,11 +140,26 @@ function LineChart({chartData,user,pwd,stock}) {
 
     }
 
+
+    useEffect(()=>{
+
+        const endDateYear = new Date(endDate).getFullYear()
+        const endDateMonth = new Date(endDate).getMonth()+1
+        const endDateDay = new Date(endDate).getDay()
+
+        setLastYear(new Date(`${endDateYear-1}`+  `,${endDateMonth}` + `,${endDateDay}`).getTime())
+        setLast5Year(new Date(`${endDateYear-5}`+  `,${endDateMonth}` + `,${endDateDay}`).getTime())
+        setLast10Year(new Date(`${endDateYear-10}`+  `,${endDateMonth}` + `,${endDateDay}`).getTime())
+        setLastMonth(new Date(`${endDateYear}`+  `,${endDateMonth-1}` + `,${endDateDay}`).getTime())
+
+
+    },[endDate])
     
 
     const handleSetPrice = (e)=>{
         e.preventDefault()
-        console.log(buy)
+        console.log(new Date(last5Year))
+
 
     }
 
@@ -142,6 +172,7 @@ function LineChart({chartData,user,pwd,stock}) {
         stock.sell=sell
         stock.period=period
         stock.ticks=ticks
+        stock.start=startDate
 
         filteredArray.push(stock)
 
@@ -220,13 +251,14 @@ function LineChart({chartData,user,pwd,stock}) {
 
                 <form>
                     <label>Range</label>
-                    <select onClick={(e)=>console.log(e.target)}>
-                        <option value="All">All</option>
-                        <option value="1Y">1Y</option>
-                        <option value="1M">1M</option>
-                        <option value="7D">7D</option>
-                        <option value="1D">1D</option>
+                    <select value={startDate} onChange={(e)=>setStartDate(e.target.value)}>
+                        <option value={last10Year}>10Y</option>
+                        <option value={last5Year}>5Y</option>
+                        <option value={lastYear}>1Y</option>
+                        <option value={lastMonth}>1M</option>
+
                     </select>
+                     <button onClick={updateUser}>update ticks</button>
                 </form>
 
 

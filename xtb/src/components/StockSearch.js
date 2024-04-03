@@ -12,6 +12,21 @@ const StockSearch = ({symbols,user,pwd}) => {
     const [chosenSymbol,setChosenSymbol] = useState('')
     const [suggestions,setSuggestions] = useState([]);
     const {stocks,dispatch} = useStocksContext()
+    const [last5Year, setLast5Year] = useState('')
+    const [endDate, setEndDate] = useState(new Date().getTime())
+
+
+
+
+    useEffect(()=>{
+        const endDateYear = new Date(endDate).getFullYear()
+        const endDateMonth = new Date(endDate).getMonth()+1
+        const endDateDay = new Date(endDate).getDay()
+        setLast5Year(new Date(`${endDateYear-5}`+  `,${endDateMonth}` + `,${endDateDay}`).getTime())
+    },[endDate])
+
+    
+
 
 
 
@@ -20,7 +35,7 @@ const StockSearch = ({symbols,user,pwd}) => {
         axios.patch('/updateUser',
         
         //CREATE ADDITIONAL ENDPOINT TO ADJUST BUY AND SELL VALUES
-        {"user":user,"stocks":[{"symbol": e.symbol, "buy": 0, "sell": 0}]}
+        {"user":user,"stocks":[{"symbol": e.symbol, "buy": 0, "sell": 0,"period":43200,"ticks":16,"start":last5Year}]}
 
         )
             .then((response)=>{
