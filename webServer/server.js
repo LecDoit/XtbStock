@@ -1,13 +1,14 @@
 require('dotenv').config()
 const mongoose = require('mongoose')
+const cors = require('cors');
 
 const connectDB = require('./dbConn')
 const express = require('express');
 const app = express()
-const path = require('path');
-const PORT = process.env.PORT || 3500;
+// const path = require('path');
+// const PORT = process.env.PORT || 3500;
 
-const WebSocket = require('ws')
+// const WebSocket = require('ws')
 
 const {createUser,getAllUsers,getUser,updateUser,resetUser,deleteStock,updateUserSellNBuy} = require('./controllers/userController.js')
 
@@ -20,15 +21,20 @@ const Users = require('./usersModel')
 connectDB()
 
 app.use(express.json())
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE")
 
-    next();
-  });
+//     next();
+//   });
+
+app.use(cors())
 
 
 app.get('/',(req,res)=>{
+  res.send
+
 
 })
 
@@ -61,8 +67,4 @@ mongoose.connection.once('open',()=>{
 
 
 
-
-// ws.send(`{
-//     "command":"getCalendar"
-// }`)
-app.listen(PORT,()=> console.log(`Server running on ${PORT}`))
+app.listen(10000,()=> console.log(`Server running on 10k`))

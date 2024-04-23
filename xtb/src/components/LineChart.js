@@ -15,8 +15,6 @@ import axios from'axios';
 
 
 function LineChart({chartData,user,pwd,stock}) {
-    console.log(stock)
-    
 
     const {stocks,dispatch} = useStocksContext()
 
@@ -122,12 +120,12 @@ function LineChart({chartData,user,pwd,stock}) {
 
 
         e.preventDefault();
-        axios.patch('/deleteStock',
+        axios.patch('https://xtbbackend.onrender.com/deleteStock',
         
         currObj
         )
             .then((response)=>{
-                console.log(response.data)
+                // console.log(response.data)
                 const json = response.data.stocks
                 dispatch({type:'DELETE_STOCK',payload:json}) 
            
@@ -158,7 +156,7 @@ function LineChart({chartData,user,pwd,stock}) {
 
     const handleSetPrice = (e)=>{
         e.preventDefault()
-        console.log(new Date(last5Year))
+
 
 
     }
@@ -176,14 +174,14 @@ function LineChart({chartData,user,pwd,stock}) {
 
         filteredArray.push(stock)
 
-        axios.patch('/updateUserSellNBuy',
+        axios.patch('https://xtbbackend.onrender.com/updateUserSellNBuy',
         
         
         {"user":user,"stocks":filteredArray}
 
         )
             .then((response)=>{
-                console.log(response.data)
+                // console.log(response.data)
                 const json = response.data.stocks
                 dispatch({type:`DELETE_STOCK`,payload:json})
              

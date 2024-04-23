@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:3500",
+  "proxy": "http://localhost:10000",
   "name": "xtb",
   "version": "0.1.0",
   "private": true,

@@ -17,7 +17,7 @@ const StockDetails = ({stock,user})=>{
         const currObj = {user:user,stocks:filteredArray}
 
         e.preventDefault();
-        axios.patch('/deleteStock',
+        axios.patch('https://xtbbackend.onrender.com/deleteStock',
         
         currObj
         )
