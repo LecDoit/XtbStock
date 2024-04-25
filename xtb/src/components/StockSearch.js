@@ -32,7 +32,7 @@ const StockSearch = ({symbols,user,pwd}) => {
 
     const updateUser = async (e)=>{
 
-        axios.patch('https://xtbbackend.onrender.com/updateUser',
+        axios.patch('https://xtbbackend.onrender.com/addStock',
         
         //CREATE ADDITIONAL ENDPOINT TO ADJUST BUY AND SELL VALUES
         {"user":user,"stocks":[{"symbol": e.symbol, "buy": 0, "sell": 0,"period":43200,"ticks":16,"start":last5Year}]}
