@@ -173,6 +173,7 @@ function LineChart({chartData,user,pwd,stock}) {
         stock.start=startDate
 
         filteredArray.push(stock)
+ 
 
         axios.patch('https://xtbbackend.onrender.com/updateUserSellNBuy',
         
