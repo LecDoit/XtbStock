@@ -1,25 +1,35 @@
 import axios from'axios';
 import { useStocksContext } from "../hooks/useStocksContext";
 
+import { useAuthContext } from '../hooks/useAuthContext';
 
 
 
 
-const StockDetails = ({stock,user})=>{
+
+const StockDetails = ({stock,userProps})=>{
 
     const {stocks,dispatch} = useStocksContext()
+    const {user} = useAuthContext()
 
 
     const handleClick = async (e) =>{
 
 
         const filteredArray = stocks.filter((s)=>s._id !== stock._id)
-        const currObj = {user:user,stocks:filteredArray}
+        const currObj = {email:userProps,stocks:filteredArray}
+        console.log({delete:currObj})
 
         e.preventDefault();
-        axios.patch('https://xtbbackend.onrender.com/deleteStock',
+        axios.patch('https://xtbbackend.onrender.com/stocks/deleteStock',
+        // axios.patch('http://localhost:10000/stocks/deleteStock',
         
-        currObj
+        currObj,
+        {
+            headers:{
+              'Authorization':`Bearer ${user.token}`
+            }
+          }
         )
             .then((response)=>{
                 console.log(response.data)
@@ -40,7 +50,7 @@ const StockDetails = ({stock,user})=>{
             <h4>{stock.symbol}</h4>
             <p>{stock.buy}</p>
             <p>{stock.sell}</p>
-            <span onClick={handleClick}>Delete</span>
+            <span onClick={handleClick}>Deletez</span>
         </div>
 
     )

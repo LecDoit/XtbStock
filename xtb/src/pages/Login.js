@@ -1,14 +1,19 @@
 import React from 'react'
 import {useState} from 'react'
+import { useLogin } from '../hooks/useLogin'
 
 const Login = () => {
 
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
+    const [email,setEmail] = useState('a@wp.pl');
+    const [password,setPassword] = useState('a');
+    const {login,error,isLoading} = useLogin()
+
 
     const handleSubmit = async (e)=>{
         e.preventDefault()
+
         console.log(email,password)
+        await login(email,password)
 
     }
 
@@ -33,6 +38,8 @@ const Login = () => {
             value={password}
         >
         </input>
+        <button disabled={isLoading}>Submit</button>
+        {error && <div>{error}</div>}
     </form>
   )
 }

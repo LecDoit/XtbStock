@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react'
 
 import axios from'axios';
 import { useStocksContext } from "../hooks/useStocksContext";
+import { useAuthContext } from '../hooks/useAuthContext';
 import { isCompositeComponent } from 'react-dom/test-utils';
 
-const StockSearch = ({symbols,user,pwd}) => {
+const StockSearch = ({symbols,userProps,pwd}) => {
 
-    
+
+    const {user} = useAuthContext()
 
     const [inputValue,setInputValue] = useState('');
     const [chosenSymbol,setChosenSymbol] = useState('')
+    const [toggleButton,setToggleButton] = useState(true)
     const [suggestions,setSuggestions] = useState([]);
     const {stocks,dispatch} = useStocksContext()
     const [last5Year, setLast5Year] = useState('')
     const [endDate, setEndDate] = useState(new Date().getTime())
+    const [body,setBody] = useState('')
 
 
 
@@ -29,26 +33,44 @@ const StockSearch = ({symbols,user,pwd}) => {
 
 
 
+    const addStocks = async (e)=>{
 
-    const updateUser = async (e)=>{
+       const body =  JSON.stringify({"email":user.email,"stocks":[{"symbol": e.symbol, "buy": 0, "sell": 0,"period":43200,"ticks":16,"start":last5Year}]})
 
-        axios.patch('https://xtbbackend.onrender.com/addStock',
-        
-        //CREATE ADDITIONAL ENDPOINT TO ADJUST BUY AND SELL VALUES
-        {"user":user,"stocks":[{"symbol": e.symbol, "buy": 0, "sell": 0,"period":43200,"ticks":16,"start":last5Year}]}
+  
+          // const response = await fetch('http://localhost:10000/stocks/addStock',{
+          const response = await fetch('https://xtbbackend.onrender.com/stocks/addStock',{
+            method:'PATCH',
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization':`Bearer ${user.token}`
+            },
+            body:body
+          })
+          const json = await response.json()
+          if (response.ok){
 
-        )
-            .then((response)=>{
-                console.log(response.data)
-                const json = response.data.stocks
-                dispatch({type:`CREATE_STOCK`,payload:json})
-             
+            dispatch({type:"CREATE_STOCK",payload:json.stocks})
 
-            })
-            setChosenSymbol('')
-            setInputValue('')
-               
-    }
+          }
+  
+          if (!response.ok){
+            console.log('its not ok',response)
+          }
+          setChosenSymbol('')
+          setInputValue('')
+          setToggleButton(true)
+        }
+
+
+
+
+      
+
+
+
+
+
 
     const onChange = (e)=>{
         const inputValue = e.target.value.toLowerCase()
@@ -57,6 +79,7 @@ const StockSearch = ({symbols,user,pwd}) => {
     }
 
     const onSearch = (searchTerm)=>{
+        setToggleButton(false)
         setInputValue(searchTerm.description)
         setChosenSymbol(searchTerm)
 
@@ -70,9 +93,8 @@ const StockSearch = ({symbols,user,pwd}) => {
     <div>
         
         <div>
-            <input type="text" value={inputValue} onChange={onChange} >
-            </input>
-            <button onClick={()=>updateUser(chosenSymbol)}>Click me</button>
+            <input type="text" value={inputValue} onChange={onChange}></input>
+            <button onClick={()=>addStocks(chosenSymbol)} disabled={toggleButton}>Add stock</button>
         </div>
         <div>
             {symbols.filter(item=>{

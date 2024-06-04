@@ -62,7 +62,6 @@ const lineChartFactory = (arg,arg2)=>{
 }
 
 function WebSocket({user,pwd}) {
-  
 
     const {stocks,dispatch} = useStocksContext() 
 
@@ -267,9 +266,10 @@ function WebSocket({user,pwd}) {
         }
         
     },[stocks,xtbStocks,readyToBeSent,equal])
+
     return (
         <div>
-            {symbols ? <StockSearch symbols={symbols.returnData} user={user} pwd = {pwd}/> : <div>no</div>}
+            {symbols ? <StockSearch symbols={symbols.returnData} userProps={user} pwd = {pwd}/> : <div>no</div>}
             <div>{connectionStatus}</div>
             <button onClick={printAllSymbols}>PrintAllSymbolsState</button>
             

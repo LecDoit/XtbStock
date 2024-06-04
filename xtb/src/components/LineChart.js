@@ -11,12 +11,15 @@ import {Chart as ChartJS,
 } from 'chart.js/auto'
 
 import axios from'axios';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 
 
-function LineChart({chartData,user,pwd,stock}) {
+
+function LineChart({chartData,userProps,pwd,stock}) {
 
     const {stocks,dispatch} = useStocksContext()
+    const {user} = useAuthContext()
 
     const [buy,setBuy] = useState(0)
     const [sell,setSell] = useState(0)
@@ -26,7 +29,7 @@ function LineChart({chartData,user,pwd,stock}) {
     const [symbol,setSymbols] = useState('')
     const [buyLine,setBuyLine] = useState('')
     const [sellLine,setSellLine] = useState('')
-    const [showDetails,setShowDetails] = useState(true)
+    const [showDetails,setShowDetails] = useState(false)
 
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
@@ -37,8 +40,6 @@ function LineChart({chartData,user,pwd,stock}) {
     const [lastMonth, setLastMonth] = useState('')
 
     // const startDate = new Date('January 1, 2022').getTime()
-
-
 
 
 
@@ -116,13 +117,20 @@ function LineChart({chartData,user,pwd,stock}) {
     const handleClickDeleteStock = async (e) =>{
  
         const filteredArray = stocks.filter((s)=>s._id !== stock._id)
-        const currObj = {user:user,stocks:filteredArray}
+        const currObj = {email:user.email,stocks:filteredArray}
 
 
         e.preventDefault();
-        axios.patch('https://xtbbackend.onrender.com/deleteStock',
+        axios.patch('https://xtbbackend.onrender.com/stocks/deleteStock',
+        // axios.patch('http://localhost:10000/stocks/deleteStock',
         
-        currObj
+        currObj,
+        {
+            headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${user.token}`
+            }
+          }
         )
             .then((response)=>{
                 // console.log(response.data)
@@ -175,14 +183,21 @@ function LineChart({chartData,user,pwd,stock}) {
         filteredArray.push(stock)
  
 
-        axios.patch('https://xtbbackend.onrender.com/updateUserSellNBuy',
+        axios.patch('https://xtbbackend.onrender.com/stocks/updateUserSellNBuy',
+        // axios.patch('http://localhost:10000/stocks/updateUserSellNBuy',
         
         
-        {"user":user,"stocks":filteredArray}
+        {"email":user.email,"stocks":filteredArray},
+        {
+            headers:{
+            'Content-Type':'application/json',
+            'Authorization':`Bearer ${user.token}`
+            }
+        }
 
         )
             .then((response)=>{
-                // console.log(response.data)
+
                 const json = response.data.stocks
                 dispatch({type:`DELETE_STOCK`,payload:json})
              
