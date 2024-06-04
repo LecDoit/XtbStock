@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/XtbStock/static/css/main.0d05f400.css",
+    "main.js": "/XtbStock/static/js/main.1586fd7c.js",
+    "index.html": "/XtbStock/index.html",
+    "main.0d05f400.css.map": "/XtbStock/static/css/main.0d05f400.css.map",
+    "main.1586fd7c.js.map": "/XtbStock/static/js/main.1586fd7c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0d05f400.css",
+    "static/js/main.1586fd7c.js"
+  ]
+}
