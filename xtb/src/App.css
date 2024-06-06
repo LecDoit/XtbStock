@@ -1,3 +1,74 @@
 *{
     border: 1px solid black;
-  }
+    font-family:"Cormorant Garamond";
+}
+body{
+  margin:0px
+}
+
+
+  /* NAVBAR */
+
+.navbar{
+  background-color: rgb(91,128,157);
+  color: white; 
+  height: 61px;
+  display:flex;
+  flex-direction: row;
+  padding:0 20px;
+  justify-content: space-between;
+}
+a{
+  text-decoration: none;  
+}
+
+a:link{
+  color:white;
+}
+a:visited{
+  color:white;
+}
+
+
+.navbar--logo{
+  display: flex;
+  flex-direction: row;
+  cursor:pointer;
+  align-items: center;
+
+}
+.navbar--buttons{
+  /* color:red; */
+  display: flex;
+  align-items: center;
+  /* flex-grow:1 ; */
+
+
+}
+.navbar--buttons--nav{
+  display: flex;
+  font-size: 18px;
+  font-weight: 600;
+  gap:50px;
+
+
+ 
+  
+
+
+}
+
+#navbar--logo{
+  font-size: 30px;
+  font-weight: 600;
+}
+
+#navbar--signin,#navbar--signup{
+  border:1px solid white;
+  border-radius: 9999px;
+  display: flex;
+  font-weight: 600;
+  padding: 8px;
+  
+ 
+}
