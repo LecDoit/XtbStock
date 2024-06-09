@@ -20,20 +20,20 @@ const Navbar = () => {
             <div className='navbar--logo' href='/'>
 
                 <Link to='/' className='navbar--logo' >
-                <Logo w={61} h={40}/>
-                    <div className='navbar--buttons' id='navbar--logo'>MargIn</div>
+                <Logo className='navbar--logo-react' w={58} h={50}/>
+                    <div  id='navbar--logo'>MargIn</div>
                 </Link>
             </div>
 
-            <nav className='navbar--buttons--nav'>
+        
                 {user && (
-                <div className='navbar--buttons'>
-                    <span>{user.email}</span>
-                    <button onClick={handleClick}>logout</button>
+                <div className='navbar--buttons--nav'>
+                    <div className='navbar--email'>{user.email}</div>
+                    <div className='navbar--buttons' onClick={handleClick}>Log out</div>
                 </div>
                 )}
                 {!user && (
-                    <div className='navbar--buttons'>
+                    <div className='navbar--buttons--nav'>
                         <Link  to='/login'>
                             <div className='navbar--buttons' id='navbar--signin'>Sign in</div>
                             </Link>
@@ -42,7 +42,7 @@ const Navbar = () => {
                         </Link>
                     </div>
                 )}
-            </nav>
+            {/* </div> */}
         </div>
 
   )

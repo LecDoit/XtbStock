@@ -17,6 +17,11 @@ function App() {
   // const {stocks,dispatch} = useStocksContext()
   const {user} = useAuthContext()
 
+  useEffect(()=>{
+    console.log(user)
+  },[user])
+
+
   return (
     <div>
       <BrowserRouter>
@@ -24,10 +29,8 @@ function App() {
       <div>
         <Routes>
           <Route path='/' 
-          element={user ? <Home /> : <Navigate to='/'/>}/>
+          element={user ? <Home /> : <Hero />}/>
 
-          <Route path='/' 
-          element={!user ? <Home /> : <Navigate to='/'/>}/>
           
           <Route path='/login' 
           element={!user ? <Login /> : <Navigate to='/'/>}/>
