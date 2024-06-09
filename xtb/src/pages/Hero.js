@@ -9,9 +9,9 @@ const Hero = () => {
           <div className='hero--header'> 
             Invest in your future
           </div>
-          <div className='hero--desc'>Set your buy and sell levels easily, maximize profits, and trade smarter with our intuitive app.
+          <div className='hero--desc'>Set your <strong>buy</strong> and <strong>sell</strong> levels easily, maximize profits, and trade smarter with our intuitive app.
           </div>
-          <div className='navbar--buttons'>
+          <div className='hero--buttons'>
             Sign up
           </div>
         </div>
