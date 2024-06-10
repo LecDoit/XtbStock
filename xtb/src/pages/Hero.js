@@ -1,7 +1,10 @@
 import React from 'react'
+import HeroLineChart from '../components/HeroLineChart'
+
 
 const Hero = () => {
-  console.log('hero is loaded')
+
+
   return (
     <div className='hero'>
       <div className='hero--1'>
@@ -15,7 +18,8 @@ const Hero = () => {
             Sign up
           </div>
         </div>
-        <div className='hero--1--2'>ANIMATION PLACEHOLDER WITH CHART.JS</div>
+        <HeroLineChart className='hero--1--2'/>
+        
       </div>
       <div className='hero--'></div>
       <div className='hero--'></div>
