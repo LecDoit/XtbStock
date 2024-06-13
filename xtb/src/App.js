@@ -17,9 +17,6 @@ function App() {
   // const {stocks,dispatch} = useStocksContext()
   const {user} = useAuthContext()
 
-  useEffect(()=>{
-    console.log(user)
-  },[user])
 
 
   return (
